@@ -39,18 +39,37 @@ let remindersController = {
 
   // Show the Edit Reminder Page
   edit: (req, res) => {
-    // ⭐️ your implementation here ⭐️
+    // ⭐️ your implementation here ⭐
+    reminderItem = database.cindy.reminders.find(val => val.id == req.params.id);
 
+    if (reminderItem) {
+      res.render('reminder/edit', {reminderItem: reminderItem});
+    } else {
+      res.redirect('/reminders/');
+    }
   },
-
+  
   // Edit the Reminder
   update: (req, res) => {
     // ⭐️ your implementation here ⭐️
+    indx = database.cindy.reminders.indexOf(database.cindy.reminders.find(rem => rem.id == req.params.id));
+    database.cindy.reminders[indx].title = req.body.title;
+    database.cindy.reminders[indx].description = req.body.description;
+    database.cindy.reminders[indx].completed = req.body.completed == 'true' ? true : false;
+
+    res.redirect('/reminders');
   },
 
   // Delete the Reminder
   delete: (req, res) => {
     // ⭐️ your implementation here ⭐️
+      userReminders = database.cindy.reminders
+      reminderIndex = userReminders.indexOf(userReminders.find(val => val.id == req.params.id))
+      userReminders = database.cindy.reminders;
+      reminderIndex = userReminders.indexOf(userReminders.find(val => val.id == req.params.id));
+  
+      userReminders.splice(reminderIndex, reminderIndex != -1 ? 1 : 0);
+      res.redirect('/reminders');
   }
 }
 
