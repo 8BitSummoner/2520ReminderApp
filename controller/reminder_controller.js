@@ -47,10 +47,15 @@ let remindersController = {
       res.redirect('/reminders/');
     }
   },
-
+  
   // Edit the Reminder
   update: (req, res) => {
-    // ⭐️ your implementation here ⭐️
+    indx = database.cindy.reminders.indexOf(database.cindy.reminders.find(rem => rem.id == req.params.id));
+    database.cindy.reminders[indx].title = req.body.title;
+    database.cindy.reminders[indx].description = req.body.description;
+    database.cindy.reminders[indx].completed = req.body.completed == 'true' ? true : false;
+
+    res.redirect('/reminders');
   },
 
   // Delete the Reminder
