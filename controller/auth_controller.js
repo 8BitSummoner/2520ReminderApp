@@ -8,8 +8,8 @@ let authController = {
   },
 
   register: (req, res) => {
-    var userEmail = req.query.email;
-    var email = {userEmail: userEmail};
+    let userEmail = req.query.email;
+    let email = {userEmail: userEmail};
     res.locals.page = "register"
     res.render('auth/register', email)
   },
