@@ -1,5 +1,6 @@
 let database = require("../database");
 
+
 let authController = {
   login: (req, res) => {
     res.locals.page = "login"
@@ -7,16 +8,20 @@ let authController = {
   },
 
   register: (req, res) => {
+    var userEmail = req.query.email;
+    var email = {userEmail: userEmail};
     res.locals.page = "register"
-    res.render('auth/register')
+    res.render('auth/register', email)
   },
 
   loginSubmit: (req, res) => {
-    // implement
+    
+    res.redirect('/reminders')
   },
 
   registerSubmit: (req, res) => {
-    // implement
+    
+    res.redirect('/reminders')
   }
 }
 
