@@ -3,16 +3,19 @@ let database = require("../database");
 let remindersController = {
   // Show a list of reminders
   list: (req, res) => {
+    res.locals.page = "list";
     res.render('reminder/index', { reminders: database.cindy.reminders })
   },
 
   // Show a Create Reminder Page
   new: (req, res) => {
+    res.locals.page = "new";
     res.render('reminder/create')
   },
 
   // Show the details of a Single Reminder
   listOne: (req, res) => {
+    res.locals.page = "listOne";
     let reminderToFind = req.params.id;
     let searchResult = database.cindy.reminders.find(function (reminder) {
       return reminder.id == reminderToFind;
@@ -39,6 +42,7 @@ let remindersController = {
 
   // Show the Edit Reminder Page
   edit: (req, res) => {
+    res.locals.page = "edit";
     reminderItem = database.cindy.reminders.find(val => val.id == req.params.id);
 
     if (reminderItem) {
