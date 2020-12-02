@@ -6,10 +6,29 @@
       <input type="text" name="title" class="form-control" id="titleInput" value="<%= reminderItem.title %>">
     </div>
     <div class="form-group">
+      <label for="tags">Tags</label>
+      <div class="add-items d-flex"">
+        <input type="text" class="form-control tags-list-input" id="tags-input" style="margin-bottom: 5px; height: 38px;" placeholder="Tags">
+        <button class="add btn btn-primary font-weight-bold" id="tags-add-btn" style="height: 38px;">Add</button>
+      </div>
+      <div class="list-wrapper">
+        <ul id="tags-list-id" class="d-flex flex-row tags-list" style='list-style-type:none;padding-left: 0;flex-wrap: wrap;'>
+          <% if(reminderItem.tags != ''){ %>
+            <% for (eachTag in reminderItem.tags){ %>
+              <li class='li' style='display: block; border-left: 2px solid; padding-left: 5px; padding-right: 5px'>
+                <div class='form-check' style='padding-left: 1%;display: inline-block'>
+                  <label class='form-check-label' style='cursor:pointer; color:crimson'><%= reminderItem.tags[eachTag] %></label>
+                </div><i class='remove mdi mdi-close-circle-outline'></i>
+              </li>
+            <% } %>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+    <div class="form-group">
       <label for="description">Description</label>
       <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"><%= reminderItem.description %></textarea>
     </div>
-
     <div class="form-group">
       <label for="completed">Completed</label>
       <div class="radio">
@@ -34,5 +53,66 @@
       </div>
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
+    <textarea id="tags-hidden-list" style='visibility: hidden;' row="1" name="tags"></textarea>
   </form>
 </div>
+
+<script>
+  let tagsListComplete = []
+  const tagsList = document.getElementsByClassName('tags-list')[0];
+  const tagsLiElement = tagsList.getElementsByTagName('li')
+  
+
+  //  tags to the hidden text field that will be sent to the database
+  const tagsToSendBack = () => {
+    document.getElementById('tags-hidden-list').innerText = tagsListComplete.join(",")
+  }
+
+
+  // right when the script is loaded (page is loaded), the tags are put into a list
+  if (tagsLiElement.length > 0){
+    for (let i = 0; i < tagsLiElement.length; i++){
+      if (tagsLiElement[i].className == 'li'){
+        tagsListComplete.push(tagsLiElement[i].innerText)
+      }
+    } tagsToSendBack()
+  }
+
+
+  // add tags
+  document.getElementById('tags-add-btn').addEventListener("click", function (event) {
+    event.preventDefault();
+    let tag = document.getElementById('tags-input').value;
+    // if there is something in the tag input
+    if (tag) {
+      // Check to see if the tag already exists in the list 
+      tagNotExist = true
+      allTags = document.getElementById('tags-list-id').getElementsByTagName('label')
+      for (let i = 0; i < allTags.length; i++){
+        if (allTags[i].innerText == tag){
+          tagNotExist = false
+        }
+      }
+      // Add it to the list if it does not exist
+      if (tagNotExist == true){
+        tagsList.innerHTML += (`<li class='li' style='display: block; border-left: 2px solid; padding-left: 5px; padding-right: 5px'><div class='form-check' style='padding-left: 1%;display: inline-block'><label class='form-check-label' style='cursor:pointer;color:crimson;'>${tag}</label></div><i class='remove mdi mdi-close-circle-outline'></i></li>`);
+        tagsListComplete.push(tag)
+        tagsToSendBack()
+      }
+      // Clear the input field
+      document.getElementById('tags-input').value = '';
+    }
+  })
+
+
+  // remove tags
+  document.querySelectorAll('.tags-list')[0].addEventListener('click', function (event){
+    if (event.target.className == "form-check-label"){
+      tag = event.target.innerText
+      document.querySelectorAll('.tags-list')[0].removeChild(event.target.parentElement.parentElement)
+      tagsListComplete.splice(tagsListComplete.indexOf(tag), 1)
+      tagsToSendBack()
+    }
+  })
+
+</script>

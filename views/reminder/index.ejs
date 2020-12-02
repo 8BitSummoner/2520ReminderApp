@@ -13,8 +13,20 @@
         <span class="badge badge-danger">False</span>
       <% } %>
       <a class="pull-right" href=<%= "/reminder/" + reminderItem.id %>>View</a>
+      <ul id="tags-list-id" class="d-flex flex-row tags-list" style='list-style-type:none;padding-left: 0;flex-wrap: wrap;'>
+        <% if (reminderItem.tags != ''){ %>
+          <% for (let n = 0; n < 3; n++){ %>
+            <li class='li' style='display: block; border-left: 2px solid; padding-left: 5px; padding-right: 5px'>
+              <div class='form-check' style='padding-left: 1%;display: inline-block'>
+                <label class='form-check-label' style='color: crimson;'><%= reminderItem.tags[n] %></label>
+              </div><i class='remove mdi mdi-close-circle-outline'></i>
+            </li>
+          <% } %>
+        <% } %>
+      </ul>
     </li>
   <% }) %>
 </ul>
 
 </div>
+
