@@ -17,8 +17,11 @@
   - `Hook up existing login and register pages to our database`
 ### Sprint 4
 - "Registered Users" page
+  - Setting a registered user page for users after they sign up their account.
 - Adding friends
+  - Use a fucntion to add friends into the database
 - Removing friends
+  - Use a function to remove friends from the database
 - User profile picture editing
 - Friends' profile pictures appearing on their reminders
 - Viewing friend's reminders in main reminder list
