@@ -19,12 +19,16 @@
 - "Registered Users" page
   - Setting a registered user page for users after they sign up their account.
 - Adding friends
-  - Use a fucntion to add friends into the database
+  - Use a function to add friends into the database (store them in friend field which could be an array for each user)
 - Removing friends
-  - Use a function to remove friends from the database
+  - Use a function to remove friends from the database (remove them from the user's array of friends)
 - User profile picture editing
+  - Add field to store profile picture url
 - Friends' profile pictures appearing on their reminders
+  - Use stored profile picture for each friend
 - Viewing friend's reminders in main reminder list
+  - Iterate through friends array and update reminder list with their reminders
+  - Could be either implemented as two separate text areas (one for the user's reminders and one for friends) or one combined reminder list
 ## Setup
 Clone the repo, install the dependencies, and run with nodemon!
 ```bash
