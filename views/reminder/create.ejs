@@ -5,9 +5,131 @@
       <input type="text" class="form-control" id="titleInput" placeholder="Title" name="title">
     </div>
     <div class="form-group">
-      <label for="description">Description</label>
-      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"></textarea>
+      <label for="tags">Tags</label>
+      <div class="add-items d-flex"">
+        <input type="text" class="form-control tags-list-input" id="tags-input" style="margin-bottom: 5px; height: 38px;" placeholder="Tags">
+        <button class="add btn btn-primary font-weight-bold" id="tags-add-btn" style="height: 38px;">Add</button>
+      </div>
+      <div class="list-wrapper">
+        <ul id="tags-list-id" class="d-flex flex-row tags-list" style='list-style-type:none;padding-left: 0;flex-wrap: wrap;'>
+        </ul>
+      </div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description"
+        name="description"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="subtasks">Subtasks</label>
+      <div class="add-items d-flex""> <input type=" text" class="form-control todo-list-input" id="subtask-input"
+        style="margin-bottom: 5px; height: 38px;" placeholder="Tasks">
+        <button class="add btn btn-primary font-weight-bold" id="subtask-add-btn" style="height: 38px;">Add</button>
+      </div>
+      <div class="list-wrapper">
+        <ul class="d-flex flex-column todo-list" style='list-style-type:none;padding-left: 0;'>
+        </ul>
+      </div>
+    </div>
+    <button type="submit" id="submit-btn" class="btn btn-default">Submit</button>
+    <textarea id="tags-hidden-list" style="visibility: hidden;" row="1" name="tags"></textarea>
   </form>
 </div>
+
+<script>
+  let tagsListComp = []
+  let todoListComp = []
+  // let taskId = 0
+  const tagsList = document.getElementsByClassName('tags-list')[0];
+  const todoList = document.getElementsByClassName('todo-list')[0];
+
+
+  //  tags to the hidden text field that will be sent to the database
+  const tagsToSendBack = (tag) => {
+    document.getElementById('tags-hidden-list').innerText = tagsListComp.join(",")
+  }
+
+
+  // add tags
+  document.getElementById('tags-add-btn').addEventListener("click", function (event) {
+    event.preventDefault();
+    let tag = document.getElementById('tags-input').value;
+    // if there is something in the tag input
+    if (tag) {
+      // Check to see if the tag already exists in the list 
+      tagNotExist = true
+      allTags = document.getElementById('tags-list-id').getElementsByTagName('label')
+      for (let i = 0; i < allTags.length; i++){
+        if (allTags[i].innerText == tag){
+          tagNotExist = false
+        }
+      }
+      // Add it to the list if it does not exist
+      if (tagNotExist == true){
+        tagsList.innerHTML += (`<li class='li' style='display: block; border-left: 2px solid; padding-left: 5px; padding-right: 5px'><div class='form-check' style='padding-left: 1%;display: inline-block'><label class='form-check-label' style='cursor:pointer;color:crimson;'>${tag}</label></div><i class='remove mdi mdi-close-circle-outline'></i></li>`);
+        tagsListComp.push(tag)
+        tagsToSendBack(tagsListComp)
+      }
+      // Clear the input field
+      document.getElementById('tags-input').value = '';
+    }
+  })
+
+
+  // remove tags
+  document.querySelectorAll('.tags-list')[0].addEventListener('click', function (event){
+    if (event.target.className == "form-check-label"){
+      tag = event.target.innerText
+      document.querySelectorAll('.tags-list')[0].removeChild(event.target.parentElement.parentElement)
+      tagsListComp.splice(tagsListComp.indexOf(tag), 1)
+      tagsToSendBack(tagsListComp)
+    }
+  })
+
+
+  // code for subtasks:
+
+  // // add subtasks
+  // document.getElementById('subtask-add-btn').addEventListener("click", function (event) {
+  //   event.preventDefault();
+  //   let item = document.getElementById('subtask-input').value;
+  //   if (item) {
+  //     todoList.innerHTML += (`<li><div class='form-check' id='${taskId}' style='padding-left: 1%;'><input class='checkbox' type='checkbox' style='margin-right: 3px;cursor:pointer;'/>${item}
+  //                               <svg style="float:right;cursor:pointer" width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-trash2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  //                                 <path fill-rule="evenodd" d="M3.18 4l1.528 9.164a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836L12.82 4H3.18zm.541 9.329A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671L14 3H2l1.721 10.329z"/>
+  //                                 <path d="M14 3c0 1.105-2.686 2-6 2s-6-.895-6-2 2.686-2 6-2 6 .895 6 2z"/>
+  //                                 <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+  //                               </svg></div></li>`);
+  //     document.getElementById('subtask-input').value = '';
+  //     todoListComp.push({id: taskId, text: item})
+  //     taskId += 1
+  //   }
+  //   console.log(todoListComp)
+  // })
+
+
+  // // task completed(crossed out) and remove tasks
+  // document.querySelectorAll('.todo-list')[0].addEventListener('click', function (event) {
+  //   if (event.target.className == "checkbox") {
+  //     event.target.parentElement.parentElement.style = event.target.checked == true ? 'text-decoration: line-through;' : 'text-decoration: none;';
+  //     console.log(event.target.parentElement.id)
+  //   }
+  //   // target on path -> svg
+  //   else if (event.target.parentElement.className.baseVal == "bi bi-trash2"){
+  //     // get the inner text of the event.target
+  //     let todotext = event.target.parentElement.parentElement.textContent
+  //     console.log(todotext)
+  //     // target path -> svg -> div -> li -> ul ----- removing path -> svg -> div -> li
+  //     event.target.parentElement.parentElement.parentElement.parentElement.removeChild(event.target.parentElement.parentElement.parentElement)
+  //   }
+  //   else if (event.target.className.baseVal == "bi bi-trash2"){
+  //     // get the inner text of the event.target
+  //     let todotext = event.target.parentElement.textContent
+  //     console.log(todotext)
+  //     // target svg -> div -> li -> ul ---- removing svg -> div -> li
+  //     event.target.parentElement.parentElement.parentElement.removeChild(event.target.parentElement.parentElement)
+  //   }
+  //   console.log(todoListComp)
+  // })
+
+</script>

@@ -34,7 +34,8 @@ let remindersController = {
       id: database.cindy.reminders.length + 1,
       title: req.body.title,
       description: req.body.description,
-      completed: false
+      completed: false,
+      tags: req.body.tags.split(",")
     }
     database.cindy.reminders.push(reminder);
     res.redirect('/reminders');
@@ -58,7 +59,7 @@ let remindersController = {
     database.cindy.reminders[indx].title = req.body.title;
     database.cindy.reminders[indx].description = req.body.description;
     database.cindy.reminders[indx].completed = req.body.completed == 'true' ? true : false;
-
+    database.cindy.reminders[indx].tags = req.body.tags.split(",");
     res.redirect('/reminders');
   },
 
