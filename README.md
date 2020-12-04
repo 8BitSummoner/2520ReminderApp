@@ -6,9 +6,13 @@
 - Zachary Chang
 ## Incomplete Tasks
 ### Sprint 3
-- Subtask viewing in main reminder list
+  - `The commented js code in "<scrit>" inside the create.ejs file allows you to add, remove and check on/off subtasks. A list of tasks needs to be sent back to the server and added to the database`
+  -`I can either be done with a fetch function, or like the way tags are done, with a hidden textarea`
+- Subtask creating
+  -`The subtasks should not be visible in the all reminder list area. Show it in the individual reminder view. The user should only be able to view the reminder here.`
 - Subtask viewing in individual reminder view
-- Subtask and tag editing on edit page
+  -`On the editing page user should be able to add, remove and check or uncheck subtasks. The same method as the create page can be used to send back the subtasks list`
+- Subtask editing on edit page
 - Session support
   - `Use cookie-based sessions via Node middleware "cookie-session"`
 - Fake authentication infrastructure
